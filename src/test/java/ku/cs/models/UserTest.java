@@ -1,11 +1,18 @@
 package ku.cs.models;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
+    User user;
+
+    @BeforeEach
+    void init(){
+        user = new User("user01", "plain-p@ssw0rd");
+    }
 
     @Test
     @DisplayName("Password should not store in plain text")
@@ -21,6 +28,29 @@ class UserTest {
     public void testPasswordShouldBeVerified() {
         User user = new User("user01", "plain-p@ssw0rd");
         boolean actual = user.validatePassword("plain-p@ssw0rd");
+        assertTrue(actual);
+    }
+
+    @Test
+    @DisplayName("test wrong password verify")
+    public void testPasswordFailsVerification() {
+        boolean actual = user.validatePassword("wrong-password");
+        assertFalse(actual);
+    }
+
+    @Test
+    @DisplayName("test getUsername")
+    public void testGetUsername() {
+        User user = new User("user01", "plain-p@ssw0rd");
+        String actual = user.getUsername();
+        String expected = "user01";
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("test isUsername")
+    public void testUsernameValidationTrue() {
+        boolean actual = user.isUsername("user01");
         assertTrue(actual);
     }
 }
